@@ -151,7 +151,7 @@ function onChangePic(ev) {
   const currentPic = flowersArr.indexOf(`${modalImgEl.src}`);
   const tmp = flowersArr.length - 1;
 
-  if (ev.key === 'ArrowRight' && currentPic === flowersArr.length - 1) {
+  if (ev.key === 'ArrowRight' &&  currentPic === flowersArr.length - 1) {
     modalImgEl.src = flowersArr[0];
   } else {
     modalImgEl.src = flowersArr[currentPic + 1];
