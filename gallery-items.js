@@ -149,17 +149,20 @@ function onModalCloseEsc(ev) {
 
 function onChangePic(ev) {
   const currentPic = flowersArr.indexOf(`${modalImgEl.src}`);
-  const tmp = flowersArr.length - 1;
+  const tmp = flowersArr.length-1;
 
-  if (ev.key === 'ArrowRight' &&  currentPic === flowersArr.length - 1) {
-    modalImgEl.src = flowersArr[0];
-  } else {
-    modalImgEl.src = flowersArr[currentPic + 1];
+  if (ev.key === 'ArrowRight') {
+    if ((currentPic === flowersArr.length-1)) {
+      modalImgEl.src = flowersArr[0];
+    } else {
+      modalImgEl.src = flowersArr[currentPic + 1];
+    }
   }
-
-  if (ev.key === 'ArrowLeft' && currentPic === 0) {
-    modalImgEl.src = flowersArr[tmp];
-  } else {
-    modalImgEl.src = flowersArr[currentPic - 1];
+  if (ev.key === 'ArrowLeft') {
+    if ((currentPic === 0)) {
+      modalImgEl.src = flowersArr[tmp];
+    } else {
+      modalImgEl.src = flowersArr[currentPic - 1];
+    }
   }
 }
