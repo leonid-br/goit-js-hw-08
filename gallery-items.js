@@ -66,17 +66,14 @@ const flowers = [
 
 const gallery = document.querySelector('.js-gallery');
 const modalOpenEl = document.querySelector('.lightbox');
-const closeBtnEl = document.querySelector(
-  '.lightbox__button',
-);
+const modalCloseEl = document.querySelector('.lightbox');
 const modalImgEl = document.querySelector('.lightbox__image');
-  
-const galleryMarkup = createPicturesCardsMarkup(flowers);
 
+const galleryMarkup = createPicturesCardsMarkup(flowers);
 gallery.insertAdjacentHTML('beforeend', galleryMarkup);
 
 gallery.addEventListener('click', onGalleryClick);
-closeBtnEl.addEventListener('click', onModalClose);
+modalCloseEl.addEventListener('click', onModalClose);
 
 function createPicturesCardsMarkup() {
   return flowers
@@ -101,20 +98,49 @@ function createPicturesCardsMarkup() {
 
 function onGalleryClick(ev) {
   const isGalleryPicEl = ev.target.classList.contains('gallery__image');
-  
+
   if (!isGalleryPicEl) {
     return;
   }
 
-  const currentPicUrl= ev.target.dataset.source
-  console.log(currentPicUrl);
-
-  modalOpenEl.classList.add('is-open')
-  console.log(modalImgEl.src);
+  const currentPicUrl = ev.target.dataset.source;
+  const currentPicAlt = ev.target.alt;
+  modalOpenEl.classList.add('is-open');
   modalImgEl.src = currentPicUrl;
+  modalImgEl.alt = currentPicAlt;
+
+  window.addEventListener('keydown', onModalCloseEsc);
 }
 
 function onModalClose(ev) {
+  if (
+    !(onModalCloseOverlay(ev) || onModalCloseBtn(ev) || onModalCloseEsc(ev))
+  ) {
+    return;
+  }
   modalOpenEl.classList.remove('is-open');
-   modalImgEl.src = "#";
+  modalImgEl.src = '#';
+  modalImgEl.alt = '';
+  window.removeEventListener('keydown', onModalCloseEsc);
 }
+
+function onModalCloseOverlay(ev) {
+  return ev.target.classList.contains('lightbox__overlay');
+}
+
+function onModalCloseBtn(ev) {
+  return ev.target.classList.contains('lightbox__button');
+}
+
+function onModalCloseEsc(ev) {
+  if (ev.key === 'Escape') {
+    modalOpenEl.classList.remove('is-open');
+    modalImgEl.src = '#';
+    modalImgEl.alt = '';
+
+    window.removeEventListener('keydown', onModalCloseEsc);
+  }
+  // return ev.key === 'Escape';
+}
+
+// function onChangePic(ev) {}
