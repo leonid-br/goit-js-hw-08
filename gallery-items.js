@@ -64,6 +64,8 @@ const flowers = [
   },
 ];
 
+const flowersArr = flowers.map(flower => flower.original);
+
 const gallery = document.querySelector('.js-gallery');
 const modalOpenEl = document.querySelector('.lightbox');
 const modalCloseEl = document.querySelector('.lightbox');
@@ -121,7 +123,6 @@ function onModalClose(ev) {
   modalOpenEl.classList.remove('is-open');
   modalImgEl.src = '#';
   modalImgEl.alt = '';
-  window.removeEventListener('keydown', onModalCloseEsc);
 }
 
 function onModalCloseOverlay(ev) {
@@ -133,6 +134,8 @@ function onModalCloseBtn(ev) {
 }
 
 function onModalCloseEsc(ev) {
+  onChangePic(ev);
+
   if (ev.key === 'Escape') {
     modalOpenEl.classList.remove('is-open');
     modalImgEl.src = '#';
@@ -140,7 +143,23 @@ function onModalCloseEsc(ev) {
 
     window.removeEventListener('keydown', onModalCloseEsc);
   }
+
   // return ev.key === 'Escape';
 }
 
-// function onChangePic(ev) {}
+function onChangePic(ev) {
+  const currentPic = flowersArr.indexOf(`${modalImgEl.src}`);
+  const tmp = flowersArr.length - 1;
+
+  if (ev.key === 'ArrowRight' && currentPic === flowersArr.length - 1) {
+    modalImgEl.src = flowersArr[0];
+  } else {
+    modalImgEl.src = flowersArr[currentPic + 1];
+  }
+
+  if (ev.key === 'ArrowLeft' && currentPic === 0) {
+    modalImgEl.src = flowersArr[tmp];
+  } else {
+    modalImgEl.src = flowersArr[currentPic - 1];
+  }
+}
