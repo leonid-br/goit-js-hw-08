@@ -65,18 +65,27 @@ const flowers = [
 ];
 
 const gallery = document.querySelector('.js-gallery');
+const modalOpenEl = document.querySelector('.lightbox');
+const closeBtnEl = document.querySelector(
+  '.lightbox__button',
+);
+const modalImgEl = document.querySelector('.lightbox__image');
+  
 const galleryMarkup = createPicturesCardsMarkup(flowers);
+
 gallery.insertAdjacentHTML('beforeend', galleryMarkup);
 
-
+gallery.addEventListener('click', onGalleryClick);
+closeBtnEl.addEventListener('click', onModalClose);
 
 function createPicturesCardsMarkup() {
-    return flowers
-      .map(({ preview, original, description }) => {
-        return `<li class="gallery__item">
+  return flowers
+    .map(({ preview, original, description }) => {
+      return `<li class="gallery__item">
                 <a
                     class="gallery__link"
-                    href="${original}"
+                    href="#"
+
                 >
                     <img
                     class="gallery__image"
@@ -86,12 +95,26 @@ function createPicturesCardsMarkup() {
                     />
                 </a>
                 </li>`;
-      })
-      .join('');
+    })
+    .join('');
 }
 
+function onGalleryClick(ev) {
+  const isGalleryPicEl = ev.target.classList.contains('gallery__image');
+  
+  if (!isGalleryPicEl) {
+    return;
+  }
 
+  const currentPicUrl= ev.target.dataset.source
+  console.log(currentPicUrl);
 
+  modalOpenEl.classList.add('is-open')
+  console.log(modalImgEl.src);
+  modalImgEl.src = currentPicUrl;
+}
 
-
-
+function onModalClose(ev) {
+  modalOpenEl.classList.remove('is-open');
+   modalImgEl.src = "#";
+}

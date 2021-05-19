@@ -98,6 +98,7 @@ body {
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.8);
+  /* background-image: url('https://cdn.pixabay.com/photo/2019/05/14/22/05/container-4203677_1280.jpg'); */
 }
 
 .lightbox__content {
