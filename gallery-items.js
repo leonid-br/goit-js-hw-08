@@ -68,14 +68,13 @@ const flowersArr = flowers.map(flower => flower.original);
 
 const gallery = document.querySelector('.js-gallery');
 const modalOpenEl = document.querySelector('.lightbox');
-const modalCloseEl = document.querySelector('.lightbox');
 const modalImgEl = document.querySelector('.lightbox__image');
 
 const galleryMarkup = createPicturesCardsMarkup(flowers);
 gallery.insertAdjacentHTML('beforeend', galleryMarkup);
 
 gallery.addEventListener('click', onGalleryClick);
-modalCloseEl.addEventListener('click', onModalClose);
+modalOpenEl.addEventListener('click', onModalClose);
 
 function createPicturesCardsMarkup() {
   return flowers
@@ -83,7 +82,7 @@ function createPicturesCardsMarkup() {
       return `<li class="gallery__item">
                 <a
                     class="gallery__link"
-                    href="#"
+                    href="${preview}"
 
                 >
                     <img
@@ -99,6 +98,7 @@ function createPicturesCardsMarkup() {
 }
 
 function onGalleryClick(ev) {
+  ev.preventDefault();
   const isGalleryPicEl = ev.target.classList.contains('gallery__image');
 
   if (!isGalleryPicEl) {
@@ -111,7 +111,7 @@ function onGalleryClick(ev) {
   modalImgEl.src = currentPicUrl;
   modalImgEl.alt = currentPicAlt;
 
-  window.addEventListener('keydown', onModalCloseEsc);
+  window.addEventListener('keydown', onModalClose);
 }
 
 function onModalClose(ev) {
@@ -123,6 +123,7 @@ function onModalClose(ev) {
   modalOpenEl.classList.remove('is-open');
   modalImgEl.src = '#';
   modalImgEl.alt = '';
+  window.removeEventListener('keydown', onModalClose);
 }
 
 function onModalCloseOverlay(ev) {
@@ -136,15 +137,7 @@ function onModalCloseBtn(ev) {
 function onModalCloseEsc(ev) {
   onChangePic(ev);
 
-  if (ev.key === 'Escape') {
-    modalOpenEl.classList.remove('is-open');
-    modalImgEl.src = '#';
-    modalImgEl.alt = '';
-
-    window.removeEventListener('keydown', onModalCloseEsc);
-  }
-
-  // return ev.key === 'Escape';
+  return ev.key === 'Escape';
 }
 
 function onChangePic(ev) {
